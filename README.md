@@ -66,8 +66,8 @@ checkpoints/
 We provide sample scripts to train from scratch. Feel free to modify the hyperparameters and training configurations.
 
 ```
-sh scripts/train_cider_cifar10.sh
-sh scripts/train_cider_dg.sh
+sh scripts/train_hypo_cifar10.sh
+sh scripts/train_hypo_dg.sh
 ```
 
 **Fine-tune from ImageNet pre-trained models** 
