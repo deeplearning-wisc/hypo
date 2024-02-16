@@ -78,7 +78,16 @@ sh scripts/train_cider_imgnet100.sh  # To be updated
 ### Citation
 
 If you find our work useful, please consider citing our paper:
+```
+@inproceedings{
+hypo2024,
+title={Provable Out-of-Distribution Generalization in Hypersphere},
+author={Haoyue Bai and Yifei Ming and Julian Katz-Samuels and Yixuan Li},
+booktitle={The Twelfth International Conference on Learning Representations (ICLR)},
+year={2024},
+}
+```
 
 
 ### Further discussions
-For more discussions on the method and extensions, feel free to drop an email at hbai39@wisc.edu
+For more discussions on the method and extensions, feel free to drop an email at hbai39@wisc.edu or ming5@wisc.edu
