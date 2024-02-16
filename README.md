@@ -70,7 +70,7 @@ sh scripts/train_cider_dg.sh
 We also provide fine-tuning scripts on large-scale datasets such as ImageNet-100.
 
 ```
-sh scripts/train_cider_imgnet100.sh  # To be updated
+sh scripts/train_hypo_imgnet100.sh 
 ```
 
 
