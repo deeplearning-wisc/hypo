@@ -18,7 +18,7 @@ In this work, we evaluate the OOD generalization performance over a range of env
 [CIFAR-10](https://www.cs.toronto.edu/~kriz/learning-features-2009-TR.pdf) & [CIFAR-10-C](https://arxiv.org/abs/1903.12261) and ImageNet-100 & [ImageNet-100-C](https://arxiv.org/abs/1903.12261).
 In alignment with prior works on the [ImageNet-100](https://github.com/deeplearning-wisc/MCM/tree/main) subset, the script for generating the subset is provided [here](https://github.com/deeplearning-wisc/MCM/blob/main/create_imagenet_subset.py).
 
-### CIFAR-10 & CIFAR-10-C
+#### CIFAR-10 & CIFAR-10-C
 
 - Create a folder named `cifar-10/` and a folder `cifar-10-c/` under `$DATA`.
 - Create `images/` under `cifar-100/` and `cifar-10-c/.
@@ -35,7 +35,7 @@ cifar-10-c/
 |   |–– val/
 ```
 
-### ImageNet-100 & ImageNet-100-C
+#### ImageNet-100 & ImageNet-100-C
 
 - Create a folder named `imagenet-100/` and a folder `imagenet-100-c/` under `$DATA`.
 - Create `images/` under `imagenet-100/` and `imagenet-100-c/.
