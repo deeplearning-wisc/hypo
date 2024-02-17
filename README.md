@@ -12,7 +12,7 @@ Out-of-distribution (OOD) generalization is critical for machine learning models
 ### Data Preparation
 In this work, we evaluate the OOD generalization performance over a range of environmental discrepancies such as domains, image corruptions, and perturbations. 
 
-**OOD generalization across domains**: The default root directory for ID and OOD datasets is `datasets/`. We consider [PACS](https://arxiv.org/abs/1710.03077), [Office-Home](https://arxiv.org/abs/1706.07522), [VLCS](https://openaccess.thecvf.com/content_iccv_2013/papers/Fang_Unbiased_Metric_Learning_2013_ICCV_paper.pdf), [Terra Incognita](https://arxiv.org/abs/1807.04975).
+**OOD generalization across domains**: The default root directory for ID and OOD datasets is `datasets/`. We consider [PACS](https://arxiv.org/abs/1710.03077), [Office-Home](https://arxiv.org/abs/1706.07522), [VLCS](https://openaccess.thecvf.com/content_iccv_2013/papers/Fang_Unbiased_Metric_Learning_2013_ICCV_paper.pdf), [Terra Incognita](https://arxiv.org/abs/1807.04975). You may use the `download.py` code to download and prepare the OOD generalization across domains datasets.
 
 **OOD generalization across common corruptions**: The default root directory for ID and OOD datasets is `datasets/`. We consider 
 [CIFAR-10](https://www.cs.toronto.edu/~kriz/learning-features-2009-TR.pdf) & [CIFAR-10-C](https://arxiv.org/abs/1903.12261) and ImageNet-100 & [ImageNet-100-C](https://arxiv.org/abs/1903.12261).
@@ -20,7 +20,7 @@ In alignment with prior works on the [ImageNet-100](https://github.com/deeplearn
 
 #### CIFAR-10 & CIFAR-10-C
 
-- Create a folder named `cifar-10/` and a folder `cifar-10-c/` under `$DATA`.
+- Create a folder named `cifar-10/` and a folder `cifar-10-c/` under `$datasets`.
 - Create `images/` under `cifar-100/` and `cifar-10-c/.
 - Download the dataset from the [CIFAR-10](https://www.cs.toronto.edu/~kriz/learning-features-2009-TR.pdf) and extract the training and validation sets to `$DATA/cifar-10/images`.
 - Download the dataset from the [CIFAR-10-C](https://arxiv.org/abs/1903.12261) and extract the training and validation sets to `$DATA/cifar-10-c/images`. The directory structure should look like
@@ -37,7 +37,7 @@ cifar-10-c/
 
 #### ImageNet-100 & ImageNet-100-C
 
-- Create a folder named `imagenet-100/` and a folder `imagenet-100-c/` under `$DATA`.
+- Create a folder named `imagenet-100/` and a folder `imagenet-100-c/` under `$datasets`.
 - Create `images/` under `imagenet-100/` and `imagenet-100-c/.
 - Download the dataset from the [ImageNet-100](https://image-net.org/index.php](https://github.com/deeplearning-wisc/MCM/tree/main) and extract the training and validation sets to `$DATA/imagenet-100/images`.
 - Download the dataset from the [ImageNet-100-C](https://arxiv.org/abs/1903.12261) and extract the training and validation sets to `$DATA/imagenet-100-c/images`. The directory structure should look like
