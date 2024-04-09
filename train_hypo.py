@@ -24,7 +24,7 @@ from utils import (CompLoss, CompNGLoss, DisLoss, DisLPLoss,
                 AverageMeter, adjust_learning_rate, warmup_learning_rate, 
                 set_loader_small, set_loader_ImageNet, set_model)
 
-parser = argparse.ArgumentParser(description='Training with CIDER and SupCon Loss')
+parser = argparse.ArgumentParser(description='Script for training with HYPO')
 parser.add_argument('--gpu', default=6, type=int, help='which GPU to use')
 parser.add_argument('--seed', default=4, type=int, help='random seed')  # original 4
 parser.add_argument('--w', default=2, type=float,
@@ -33,11 +33,11 @@ parser.add_argument('--proto_m', default= 0.95, type=float,
                    help='weight of prototype update')
 parser.add_argument('--feat_dim', default = 128, type=int,
                     help='feature dim')
-parser.add_argument('--in-dataset', default="PACS", type=str, help='in-distribution dataset', choices=['PACS', 'VLCS', 'CIFAR-10', 'CIFAR-100', 'ImageNet-100', 'OfficeHome', 'terra_incognita'])
-parser.add_argument('--id_loc', default="datasets/PACS", type=str, help='location of in-distribution dataset')
+parser.add_argument('--in-dataset', default="CIFAR-10", type=str, help='in-distribution dataset', choices=['PACS', 'VLCS', 'CIFAR-10', 'CIFAR-100', 'ImageNet-100', 'OfficeHome', 'terra_incognita'])
+parser.add_argument('--id_loc', default="datasets/CIFAR10", type=str, help='location of in-distribution dataset')
 parser.add_argument('--model', default='resnet18', type=str, help='model architecture: [resnet18, wrt40, wrt28, wrt16, densenet100, resnet50, resnet34]') 
 parser.add_argument('--head', default='mlp', type=str, help='either mlp or linear head')
-parser.add_argument('--loss', default = 'cider', type=str, choices = ['hypo', 'erm'],
+parser.add_argument('--loss', default = 'hypo', type=str, choices = ['hypo', 'erm'],
                     help='name of experiment')
 parser.add_argument('--epochs', default=50, type=int,
                     help='number of total epochs to run')
@@ -104,10 +104,10 @@ else:
 
 args.log_directory = "logs/{in_dataset}/{name}/".format(in_dataset=args.in_dataset, name= args.name)
 
-args.model_directory = "/nobackup/hybai/checkpoints/hypo_cr/{in_dataset}/{name}/".format(in_dataset=args.in_dataset, name= args.name)
+args.model_directory = "checkpoints/hypo_cr/{in_dataset}/{name}/".format(in_dataset=args.in_dataset, name= args.name)
 
 
-args.tb_path = './save/cider/{}_tensorboard'.format(args.in_dataset)
+args.tb_path = './save/hypo/{}_tensorboard'.format(args.in_dataset)
 if not os.path.exists(args.model_directory):
     os.makedirs(args.model_directory)
 if not os.path.exists(args.log_directory):
@@ -173,7 +173,6 @@ def main():
     wandb.init(
         # Set the project where this run will be logged
         project="hypo",
-        entity='ood-project',
         # We pass a run name (otherwise it’ll be randomly assigned, like sunshine-lollypop-10)
         name=args.name, 
         # Track hyperparameters and run metadata
@@ -192,18 +191,7 @@ def main():
     model = set_model(args)
 
     criterion_comp = CompLoss(args, temperature=args.temp, use_domain = args.use_domain).cuda()
-    #criterion_comp = CompNGLoss(args, temperature=args.temp).cuda() # no negative pairs
-    # V1: learnable prototypes
-    #criterion_dis = DisLPLoss(args, model, val_loader, temperature=args.temp).cuda() # V1: learnable prototypes
-    #optimizer = torch.optim.SGD([ {"params": model.parameters()},
-    #                              {"params": criterion_dis.prototypes}  
-    #                            ], lr = args.learning_rate,
-    #                            momentum=args.momentum,
-    #                            nesterov=True,
-    #                            weight_decay=args.weight_decay)
-
-    # V2: EMA style prototypes
-    criterion_dis = DisLoss(args, model, val_loader, temperature=args.temp).cuda() # V2: prototypes with EMA style update
+    criterion_dis = DisLoss(args, model, val_loader, temperature=args.temp).cuda()
 
     optimizer = torch.optim.SGD(model.parameters(), lr = args.learning_rate,
                                 momentum=args.momentum,
@@ -219,13 +207,11 @@ def main():
     for epoch in range(args.start_epoch, args.epochs):
         adjust_learning_rate(args, optimizer, epoch)
         # train for one epoch
-
-        train_sloss, train_uloss, train_dloss, acc, acc_cor= train_cider(args, train_loader, val_loader, test_loader, model, criterion_comp, criterion_dis, optimizer, epoch, log)
+        train_sloss, train_uloss, train_dloss, acc, acc_cor= train_hypo(args, train_loader, val_loader, test_loader, model, criterion_comp, criterion_dis, optimizer, epoch, log)
 
         tb_log.log_value('train_uni_loss', train_uloss, epoch)
         tb_log.log_value('train_dis_loss', train_dloss, epoch)
         wandb.log({'Comp Loss Ep': train_uloss,'Dis Loss Ep': train_dloss })
-        # tensorboard logger
         tb_log.log_value('learning_rate', optimizer.param_groups[0]['lr'], epoch)
         wandb.log({'current lr': optimizer.param_groups[0]['lr'], 'acc':acc, 'acc cor': acc_cor})
         
@@ -271,7 +257,7 @@ def main():
     for metric_name, metric_value in summary_metrics.items():
         wandb.summary[metric_name] = metric_value
 
-def train_cider(args, train_loader, val_loader, test_loader, model, criterion_comp, criterion_dis, optimizer, epoch, log): # for cider
+def train_hypo(args, train_loader, val_loader, test_loader, model, criterion_comp, criterion_dis, optimizer, epoch, log): 
     """Train for one epoch on the training set"""
     batch_time = AverageMeter()
     supcon_losses = AverageMeter()
@@ -281,8 +267,13 @@ def train_cider(args, train_loader, val_loader, test_loader, model, criterion_co
 
     model.train()
     end = time.time()
-    for i, (input, target, domain) in enumerate(train_loader):
-
+    for i, values in enumerate(train_loader):
+        if len(values) == 3:
+            input, target, domain = values
+        elif len(values) == 2:
+            input, target = values
+            domain = None 
+        
         warmup_learning_rate(args, epoch, i, len(train_loader), optimizer)
         bsz = target.shape[0]
 
@@ -296,8 +287,7 @@ def train_cider(args, train_loader, val_loader, test_loader, model, criterion_co
         features= model.head(penultimate)
         features= F.normalize(features, dim=1)
 
-        #dis_loss = criterion_dis.compute() # V1: learnable prototypes
-        dis_loss = criterion_dis(features, target) # V2: EMA style
+        dis_loss = criterion_dis(features, target) 
         comp_loss = criterion_comp(features, criterion_dis.prototypes, target, None)
 
         loss = args.w * comp_loss + dis_loss
@@ -325,7 +315,12 @@ def train_cider(args, train_loader, val_loader, test_loader, model, criterion_co
     model.eval()
     with torch.no_grad():
         accuracies = []
-        for i, (input, target, domain) in enumerate(val_loader):
+        for i, values in enumerate(val_loader):
+            if len(values) == 3:
+                input, target, domain = values
+            elif len(values) == 2:
+                input, target = values
+                domain = None 
             input = input.cuda()
             target = target.cuda()
 
@@ -347,7 +342,12 @@ def train_cider(args, train_loader, val_loader, test_loader, model, criterion_co
     else:
         with torch.no_grad():
             accuracies_cor = []
-            for i, (input, target, domain) in enumerate(test_loader):
+            for i, values in enumerate(test_loader):
+                if len(values) == 3:
+                    input, target, domain = values
+                elif len(values) == 2:
+                    input, target = values
+                    domain = None 
                 input = input.cuda()
                 target = target.cuda()
 

@@ -4,7 +4,7 @@ ID_LOC=datasets/CIFAR10
 OOD_LOC=datasets/small_OOD_dataset
 
 
-python eval_ood.py \
+python eval_hypo.py \
         --epoch 500 \
         --model resnet18 \
         --head mlp \

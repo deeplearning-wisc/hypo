@@ -1,9 +1,9 @@
-python train_cider.py \
+python train_hypo.py \
     --in-dataset PACS\
     --id_loc datasets/PACS \
     --gpu 1 \
     --model resnet50 \
-    --loss cider \
+    --loss hypo \
     --epochs 50 \
     --proto_m 0.95 \
     --learning_rate 0.0005 \

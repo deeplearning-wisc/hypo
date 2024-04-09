@@ -261,7 +261,12 @@ class DisLoss(nn.Module):
         prototype_counts = [0]*self.args.n_cls
         with torch.no_grad():
             prototypes = torch.zeros(self.args.n_cls,self.args.feat_dim).cuda()
-            for i, (input, target, domain) in enumerate(self.loader):
+            for i, values in enumerate(self.loader):
+                if len(values) == 3:
+                    input, target, domain = values
+                elif len(values) == 2:
+                    input, target = values
+                    domain = None 
                 input, target = input.cuda(), target.cuda()
                 features = self.model(input)
                 for j, feature in enumerate(features):

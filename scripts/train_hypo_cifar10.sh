@@ -1,9 +1,9 @@
-python train_cider.py \
+python train_hypo.py \
     --in-dataset CIFAR-10 \
     --id_loc datasets/CIFAR10 \
-    --gpu 2 \
+    --gpu 6 \
     --model resnet18 \
-    --loss cider \
+    --loss hypo \
     --epochs 500 \
     --proto_m 0.95 \
     --feat_dim 128 \

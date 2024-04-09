@@ -1,0 +1,8 @@
+checkpoints/
+logs/
+save/
+wandb/
+datasets/
+
+__pycache__/
+.DS_Store
