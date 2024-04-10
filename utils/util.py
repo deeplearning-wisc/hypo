@@ -137,7 +137,7 @@ def set_loader_small(args, eval = False, batch_size = None, img_size = 32):
             train_loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=False, **kwargs)
         else:
             train_data = datasets.CIFAR10(root, train=True, download=True,
-                            transform=TwoCropTransform(train_transform_supcon))
+                            transform=train_transform_supcon)
 
             train_loader = torch.utils.data.DataLoader(
                     train_data,
@@ -160,7 +160,7 @@ def set_loader_small(args, eval = False, batch_size = None, img_size = 32):
         else:
             train_loader = torch.utils.data.DataLoader(
                     datasets.CIFAR100(root, train=True, download=True,
-                             transform=TwoCropTransform(train_transform_supcon)),
+                             transform=train_transform_supcon),
                     batch_size=args.batch_size, shuffle=True, **kwargs)
         val_loader = torch.utils.data.DataLoader(
             datasets.CIFAR100(root, train=False, transform=transform_test),
@@ -288,12 +288,8 @@ def set_loader_ImageNet(args, eval = False, batch_size = None):
             dataset = torch.utils.data.Subset(dataset , np.random.choice(len(dataset), 20000, replace=False))
         train_loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=False, **kwargs)
     else:
-        if args.loss == 'erm':
-            dataset = datasets.ImageFolder(os.path.join(root, 'train'),
+        dataset = datasets.ImageFolder(os.path.join(root, 'train'),
                     transform=train_transform_supcon)
-        else:
-            dataset = datasets.ImageFolder(os.path.join(root, 'train'),
-                    transform=TwoCropTransform(train_transform_supcon))
         train_loader = torch.utils.data.DataLoader(
             dataset, batch_size=args.batch_size, shuffle=True, **kwargs)
     val_loader = torch.utils.data.DataLoader(

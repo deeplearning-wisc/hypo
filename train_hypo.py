@@ -104,7 +104,7 @@ else:
 
 args.log_directory = "logs/{in_dataset}/{name}/".format(in_dataset=args.in_dataset, name= args.name)
 
-args.model_directory = "checkpoints/hypo_cr/{in_dataset}/{name}/".format(in_dataset=args.in_dataset, name= args.name)
+args.model_directory = "/nobackup2/yf/checkpoints/hypo_cr/{in_dataset}/{name}/".format(in_dataset=args.in_dataset, name= args.name)
 
 
 args.tb_path = './save/hypo/{}_tensorboard'.format(args.in_dataset)

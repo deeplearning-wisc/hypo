@@ -6,3 +6,5 @@ datasets/
 
 __pycache__/
 .DS_Store
+
+*debug.sh

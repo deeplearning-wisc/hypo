@@ -19,21 +19,23 @@ from random import sample, random
 
 
 class CorCIFARDataset(data.Dataset):
-    def __init__(self, set_name, cortype, dataset):
+    def __init__(self, ood_loc, set_name, cortype, dataset):
 
-        if dataset in ['CIFAR-10']:
+        if dataset == 'CIFAR-10':
             print('loading CorCIFAR-10')
 
-            CorCIFAR_train_path = './data/cifar10_trainc'
-            CorCIFAR_test_path = './data/cifar10_testc'
+            # CorCIFAR_train_path = './data/cifar10_trainc'
+            # CorCIFAR_test_path = './data/cifar10_testc'
+            CorCIFAR_train_path = f'{ood_loc}/CorCIFAR10_train'
+            CorCIFAR_test_path = f'{ood_loc}/CorCIFAR10_test'
             self.num_class = 10
 
-        elif dataset in ['CIFAR-100']:
-            print('loading CorCIFAR-100')
+        # elif dataset in ['CIFAR-100']:
+        #     print('loading CorCIFAR-100')
 
-            CorCIFAR_train_path = './data/cifar100_trainc'
-            CorCIFAR_test_path = './data/cifar100_testc'  
-            self.num_class = 100
+        #     CorCIFAR_train_path = './data/cifar100_trainc'
+        #     CorCIFAR_test_path = './data/cifar100_testc'  
+        #     self.num_class = 100
 
         mean = [x / 255 for x in [125.3, 123.0, 113.9]]
         std = [x / 255 for x in [63.0, 62.1, 66.7]]
