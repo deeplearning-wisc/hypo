@@ -23,18 +23,15 @@ In alignment with prior works on the [ImageNet-100](https://github.com/deeplearn
 #### CIFAR-10 & CIFAR-10-C
 
 - Create a folder named `cifar-10/` and a folder `cifar-10-c/` under `$datasets`.
-- Create `images/` under `cifar-100/` and `cifar-10-c/.
-- Download the dataset from the [CIFAR-10](https://www.cs.toronto.edu/~kriz/learning-features-2009-TR.pdf) and extract the training and validation sets to `$DATA/cifar-10/images`.
-- Download the dataset from the [CIFAR-10-C](https://arxiv.org/abs/1903.12261) and extract the training and validation sets to `$DATA/cifar-10-c/images`. The directory structure should look like
+- Download the dataset from the [CIFAR-10](https://www.cs.toronto.edu/~kriz/learning-features-2009-TR.pdf) and extract the training and validation sets to `$DATA/cifar-10/`.
+- Download the dataset from the [CIFAR-10-C](https://arxiv.org/abs/1903.12261) and extract the training and test sets to `$DATA/cifar-10-c/`. The directory structure should look like
 ```
 cifar-10/
-|–– images/
-|   |–– train/ 
-|   |–– val/
+|–– train/ 
+|–– val/
 cifar-10-c/
-|–– images/
-|   |–– train/ 
-|   |–– val/
+|–– CorCIFAR10_train/ 
+|–– CorCIFAR10_test/
 ```
 
 #### ImageNet-100 & ImageNet-100-C
