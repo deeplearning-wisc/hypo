@@ -8,8 +8,8 @@ python train_hypo.py \
     --proto_m 0.95 \
     --learning_rate 0.0005 \
     --feat_dim 512 \
-    --batch_size 64 \
+    --batch_size 32 \
     --target_domain cartoon \
     --head mlp \
-    --w 2 \
+    --w 4 \
     --cosine
