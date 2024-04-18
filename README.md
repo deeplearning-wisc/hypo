@@ -57,7 +57,7 @@ imagenet-100-c/
 
 **Evaluate pre-trained checkpoints** 
 
-Our checkpoints can be downloaded [here](https://drive.google.com/file/d/1FeK_eyKHBl-tKo8coM4ra6VGS7qooun7/view?usp=drive_link). Create a directory named `checkpoints/[ID_DATASET]` in the root directory of the project and put the downloaded checkpoints here. For example, for CIFAR-10 and PACS:
+Our checkpoints can be downloaded [here](https://drive.google.com/file/d/1nflCX3YUTwX54QR_jiLlPq9q6Hni2YMe/view?usp=drive_link). Create a directory named `checkpoints/[ID_DATASET]` in the root directory of the project and put the downloaded checkpoints here. For example, for CIFAR-10 and PACS:
 
 ```
 checkpoints/
