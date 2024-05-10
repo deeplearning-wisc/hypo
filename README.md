@@ -1,6 +1,6 @@
 # HYPO: Hyperspherical Out-of-Distribution Generalization
 
-This codebase provides a Pytorch implementation for the paper: [HYPO: Hyperspherical Out-of-Distribution Generalization](https://openreview.net/pdf?id=VXak3CZZGC) at ICLR 2024.
+This codebase provides a Pytorch implementation for the paper: [HYPO: Hyperspherical Out-of-Distribution Generalization](https://openreview.net/pdf?id=VXak3CZZGC) by Haoyue Bai*, Yifei Ming*, Julian Katz-Samuels, and Yixuan Li, .
 
 **Remarks**: The current codebase is available for preview purposes only and is still under development. We are actively working on eliminating hard-coded links, removing unused arguments, and streamlining the processes for loading models and datasets. Please stay tuned for forthcoming updates.
 
